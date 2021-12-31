@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const morgan = require("morgan");
 const expressLayout = require("express-ejs-layouts");
 const path = require("path");
 const session = require("express-session");
