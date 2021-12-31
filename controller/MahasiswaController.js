@@ -26,6 +26,7 @@ exports.create = async (req, res) => {
 		layout: "layouts/app-layout",
 		title: "Tambah Mahasiswa",
 		fakultas,
+		domain_uri: process.env.DOMAIN_URI,
 		error: req.flash("error")
 	});
 };
@@ -127,6 +128,7 @@ exports.edit = async (req, res) => {
 		mahasiswa,
 		fakultas,
 		jurusan,
+		domain_uri: process.env.DOMAIN_URI,
 		error: req.flash("error")
 	});
 };

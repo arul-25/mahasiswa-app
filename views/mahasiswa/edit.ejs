@@ -107,12 +107,13 @@
 		</div>
 	</form>
 </div>
-
+<div hidden="hidden" id="domain-uri" data-domain="<%= domain_uri %>"></div>
 <script defer>
 	$("#fakultas").on("change", function () {
 		let fakultas = $("#fakultas").val();
+		let domain = $("#domain-uri").data("domain");
 		$.ajax({
-			url: `http://localhost:8000/jurusan/api/getJurusan`,
+			url: `${domain}/jurusan/api/getJurusan`,
 			type: "post",
 			data: { fakultas },
 			success: function (data) {
