@@ -1,0 +1,53 @@
+<div class="container">
+	<% if(msg.length) {%>
+	<span class="status"><%=msg %></span>
+	<%}%>
+	<div class="box-nav d-flex-justify-between">
+		<a href="/mahasiswa/create" class="border-shadow-sky">
+			<span class="text-dark"><i class="fas fa-user"></i> Mahasiswa Baru</span>
+		</a>
+	</div>
+
+	<!-- form handling -->
+
+	<table class="table table-margin">
+		<thead class="thead-dark">
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Fakultas</th>
+				<th>Jurusan</th>
+				<th>Gambar</th>
+				<th>Gender</th>
+				<th>Status</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% for (let i =0; i < mahasiswa.length; i++) {%>
+			<tr>
+				<td><%= i + 1 %></td>
+				<td><%= mahasiswa[i].nama %></td>
+				<td><%= mahasiswa[i].email %></td>
+				<td><%= mahasiswa[i].fakultas %></td>
+				<td><%= mahasiswa[i].jurusan %></td>
+				<td>
+					<img src="/images/<%= mahasiswa[i].image %>" class="object-container" />
+				</td>
+				<td><%= mahasiswa[i].jenis_kelamin %></td>
+				<td><%= mahasiswa[i].status %></td>
+				<td class="d-flex-2">
+					<a href="/mahasiswa/<%= mahasiswa[i].nim %>/edit" class="btn border-shadow update">
+						<span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
+					</a>
+					<a style="cursor: pointer" class="btn border-shadow delete" onclick='event.preventDefault(); document.getElementById("<%= mahasiswa[i].nim %>").submit();'>
+						<span class="text-gradient"><i class="fas fa-times"></i></span>
+					</a>
+					<form action="/mahasiswa/<%= mahasiswa[i].nim %>?_method=DELETE" method="POST" hidden="hidden" id="<%= mahasiswa[i].nim %>"></form>
+				</td>
+			</tr>
+			<%}%>
+		</tbody>
+	</table>
+</div>

@@ -1,0 +1,30 @@
+<div class="container">
+	<div class="box-nav d-flex justify-between">
+		<div class="filter">
+			<a href="/fakultas"><i class="fas fa-angle-double-left"></i> Semua Fakultas</a>
+		</div>
+	</div>
+	<div class="form-title text-center">
+		<h2 class="text-dark">Tambah Fakultas</h2>
+		<span class="text-light">Gunakan formulir dibawah ini untuk menginputkan fakultas baru</span>
+	</div>
+
+	<!-- form handling -->
+	<form action="/fakultas/store" method="POST" id="tambah">
+		<div class="new_user">
+			<div class="form-group-2">
+				<label for="jurusan" class="text-light">Fakultas</label>
+				<div>
+					<input type="text" name="fakultas" class="width-50" value="" placeholder="Ilmu Komputer" />
+					<% if (error.length) {%>
+					<span class="invalid-feedback"><%- error[0].msg %></span>
+					<%}%>
+				</div>
+			</div>
+
+			<div class="form-group-2">
+				<button type="submit" class="btn text-dark update">Save</button>
+			</div>
+		</div>
+	</form>
+</div>

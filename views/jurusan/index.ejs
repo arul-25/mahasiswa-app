@@ -1,0 +1,41 @@
+<div class="container">
+	<% if(msg.length) {%>
+	<span class="status"><%=msg %></span>
+	<%}%>
+	<div class="box-nav d-flex-justify-between">
+		<a href="/jurusan/create" class="border-shadow-sky">
+			<span class="text-dark"><i class="fas fa-user"></i> Jurusan Baru</span>
+		</a>
+	</div>
+
+	<!-- form handling -->
+
+	<table class="table table-margin">
+		<thead class="thead-dark">
+			<tr>
+				<th>Nomor</th>
+				<th>Nama Jurusan</th>
+				<th>Fakultas</th>
+				<th>Aksi</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% for(let i = 0; i < jurusan.length; i++) {%>
+			<tr>
+				<td><%= i + 1 %></td>
+				<td class="capitalize"><%= jurusan[i].jurusan%></td>
+				<td class="capitalize"><%= jurusan[i].fakultas%></td>
+				<td>
+					<a href="/jurusan/<%= jurusan[i].slug %>/edit" class="btn border-shadow update">
+						<span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
+					</a>
+					<a href="<%= jurusan[i].slug %>" class="btn border-shadow delete" onclick='event.preventDefault(); document.getElementById("<%= jurusan[i].slug %>").submit();' style="cursor: pointer">
+						<span class="text-gradient"><i class="fas fa-times"></i></span>
+					</a>
+					<form action="/jurusan/<%= jurusan[i].slug %>?_method=DELETE" method="POST" id="<%= jurusan[i].slug %>"></form>
+				</td>
+			</tr>
+			<%} %>
+		</tbody>
+	</table>
+</div>

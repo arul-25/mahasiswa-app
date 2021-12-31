@@ -1,0 +1,145 @@
+<div class="container">
+	<div class="box-nav d-flex justify-between">
+		<div class="filter">
+			<a href="/mahasiswa"><i class="fas fa-angle-double-left"></i> Semua Mahasiswa</a>
+		</div>
+	</div>
+	<div class="form-title text-center">
+		<h2 class="text-dark">Tambah Mahasiswa</h2>
+		<span class="text-light">Gunakan formulir dibawah ini untuk menginputkan mahasiswa baru</span>
+	</div>
+
+	<!-- form handling -->
+	<form action="/mahasiswa/<%= mahasiswa.nim %>/update?_method=PUT" method="POST" id="tambah" enctype="multipart/form-data">
+		<div class="new_user">
+			<div class="form-group-2">
+				<label for="nama" class="text-light">Nama</label>
+				<input type="text" name="nama" value="<%= mahasiswa.nama %>" />
+				<% if (error[0]?.nama) {%>
+				<span class="invalid-feedback"><%- error[0].nama.msg %></span>
+				<%}%>
+			</div>
+			<div class="form-group-2">
+				<label for="nim" class="text-light">Nim</label>
+				<input type="text" name="nim" value="<%= mahasiswa.nim %>" />
+				<% if (error[0]?.nim) {%>
+				<span class="invalid-feedback"><%- error[0].nim.msg %></span>
+				<%}%>
+			</div>
+
+			<div class="form-group-2">
+				<label for="email" class="text-light">Email</label>
+				<input type="text" name="email" value="<%= mahasiswa.email %>" />
+				<% if (error[0]?.email) {%>
+				<span class="invalid-feedback"><%- error[0].email.msg %></span>
+				<%}%>
+			</div>
+
+			<div class="form-group-2">
+				<label for="" class="text-light">Pilih Jurusan</label>
+				<div class="d-flex-2">
+					<div class="w-100">
+						<select name="fakultas" id="fakultas" class="w-90">
+							<% for(let i = 0; i < fakultas.length; i++) { %>
+							<option <%= fakultas[i].fakultas == mahasiswa.fakultas ? "selected" : "" %> value="<%= fakultas[i].fakultas %>"><%= fakultas[i].fakultas %></option>
+							<% } %>
+						</select>
+						<% if (error[0]?.fakultas) {%>
+						<span class="invalid-feedback"><%- error[0].fakultas.msg %></span>
+						<%}%>
+					</div>
+					<div class="w-100 text-end">
+						<select name="jurusan" id="jurusan" class="w-90">
+							<% for(let i = 0; i < jurusan.length; i ++) {%>
+                                <option <%= jurusan[i].jurusan == mahasiswa.jurusan ? "selected" : "" %> value="<%=jurusan[i].jurusan %>"><%=jurusan[i].jurusan %></option>
+                            <%}%>
+						</select>
+						<% if (error[0]?.jurusan) {%>
+						<span class="invalid-feedback"><%- error[0].jurusan.msg %></span>
+						<%}%>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group-2">
+				<label for="jenis_kelamin" class="text-light">Jenis Kelamin</label>
+				<div class="radio inline">
+					<input <%= mahasiswa.jenis_kelamin == "Pria" ? "checked" : "" %>  type="radio" id="radio-2" name="jenis_kelamin" value="Pria" />
+					<label for="radio-2" class="radio-label">Pria</label>
+				</div>
+				<div class="radio inline">
+					<input type="radio" <%= mahasiswa.jenis_kelamin == "Wanita" ? "checked" : "" %> id="radio-3" name="jenis_kelamin" value="Wanita" />
+					<label for="radio-3" class="radio-label">Wanita</label>
+				</div>
+				<% if (error[0]?.jenis_kelamin) {%>
+				<span class="invalid-feedback"><%- error[0].jenis_kelamin.msg %></span>
+				<%}%>
+			</div>
+
+			<div class="form-group-2">
+				<label for="status" class="text-light">Status</label>
+				<div class="radio inline">
+					<input <%= mahasiswa.status == "Aktif" ? "checked" : "" %> type="radio" id="radio-4" name="status" value="Aktif" />
+					<label for="radio-4" class="radio-label">Aktif</label>
+				</div>
+				<div class="radio inline">
+					<input <%= mahasiswa.status == "Tidak Aktif" ? "checked" : "" %> type="radio" id="radio-5" name="status" value="Tidak Aktif" />
+					<label for="radio-5" class="radio-label">Tidak Aktif</label>
+				</div>
+				<% if (error[0]?.status) {%>
+				<span class="invalid-feedback"><%- error[0].status.msg %></span>
+				<%}%>
+			</div>
+
+			<div class="form-group-2">
+				<input type="file" name="image" id="image" hidden="hidden" />
+				<input type="text" name="old_image" id="old_image" hidden="hidden" value="<%= mahasiswa.image %>" />
+				<button type="button" id="button-gambar">Pilih File</button>
+				<span id="text-file">Belum ada file yang dipilih</span>
+				<% if (error[0]?.image) {%>
+				<span class="invalid-feedback"><%- error[0].image.msg %></span>
+				<%}%>
+			</div>
+
+			<div class="form-group-2">
+				<button type="submit" class="btn text-dark update">Save</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<script defer>
+	$("#fakultas").on("change", function () {
+		let fakultas = $("#fakultas").val();
+		$.ajax({
+			url: `http://localhost:8000/jurusan/api/getJurusan`,
+			type: "post",
+			data: { fakultas },
+			success: function (data) {
+				$("#jurusan").html(`
+					<option selected disabled>-- Pilih Jurusan --</option>
+					${data.map((jurusan) => {
+						console.log(jurusan);
+						return `<option value="${jurusan.jurusan}">${jurusan.jurusan}</option>`;
+					})}
+				`);
+			}
+		});
+	});
+
+	const gambar = document.getElementById("image");
+	const buttonGambar = document.getElementById("button-gambar");
+	const textFile = document.getElementById("text-file");
+
+	buttonGambar.addEventListener("click", function () {
+		gambar.click();
+	});
+
+	gambar.addEventListener("change", function () {
+		if (gambar.value) {
+			textFile.innerHTML = gambar.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1];
+		} else {
+			textFile.innerHTML = "Belum ada file yang dipilih";
+		}
+	});
+</script>
